@@ -31,15 +31,15 @@ void loop(){
   rightVal = digitalRead(RIGHT_SENSOR);
   
   // print sensor input values for debugging
-//  Serial.print("left: ");
-//  Serial.print(leftVal);
-//  Serial.print(", right: ");
-//  Serial.println(rightVal);
+  Serial.print("left: ");
+  Serial.print(leftVal);
+  Serial.print(", right: ");
+  Serial.println(rightVal);
   
   if (leftVal == HIGH and rightVal == HIGH) {            // check if both inputs are HIGH
     digitalWrite(LEFT_LED, HIGH);   // turn LED ON
     digitalWrite(RIGHT_LED, HIGH);  // turn LED ON
-    Serial.println("both");
+//    Serial.println("both");
     if (leftPirState == LOW and rightPirState == LOW) {
       // we have just turned on
       Serial.println("Motion detected on LEFT and RIGHT!");
@@ -49,7 +49,7 @@ void loop(){
     }
   } else if (leftVal == HIGH and rightVal == LOW) {            // check if left input is HIGH
     digitalWrite(LEFT_LED, HIGH);  // turn LED ON
-    Serial.println("left");
+//    Serial.println("left");
     if (leftPirState == LOW) {
       // we have just turned on
       Serial.println("Motion detected on LEFT!");
@@ -58,7 +58,7 @@ void loop(){
     }
   } else if (rightVal == HIGH and leftVal == LOW) {            // check if right input is HIGH
     digitalWrite(RIGHT_LED, HIGH);  // turn LED ON
-    Serial.println("right");
+//    Serial.println("right");
     if (rightPirState == LOW) {
       // we have just turned on
       Serial.println("Motion detected on RIGHT!");
@@ -68,7 +68,7 @@ void loop(){
   } else if (leftVal == LOW and rightVal == LOW) {          // check if both inputs are LOW
     digitalWrite(LEFT_LED, LOW); // turn LED OFF
     digitalWrite(RIGHT_LED, LOW); // turn LED OFF
-    Serial.println("none");
+//    Serial.println("none");
     if (leftPirState == HIGH and rightPirState == HIGH){
       // we have just turned off
       Serial.println("Motion ended on LEFT and RIGHT!");

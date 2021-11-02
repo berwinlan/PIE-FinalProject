@@ -9,14 +9,14 @@
 // Define constants
 #define LEFT_LED 12
 #define RIGHT_LED 13
-#define LEFT_SENSOR A0
-#define RIGHT_SENSOR A1
+#define LEFT_SENSOR 7
+#define RIGHT_SENSOR 8
 #define LEFT_MOTOR 2        // Set left motor pin to M2
 #define RIGHT_MOTOR 1       // Set right motor pin to M1
 
 #define BAUD_RATE 9600
 
-#define INITIAL_SPEED 10
+#define INITIAL_SPEED 25
 
 // Initialize values
 int leftPirState = LOW;             // we start, assuming no motion detected

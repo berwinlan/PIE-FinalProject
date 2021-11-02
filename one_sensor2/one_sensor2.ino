@@ -6,7 +6,7 @@
  * Tutorial page: https://arduinogetstarted.com/tutorials/arduino-motion-sensor
  */
 
-#define LEFT_SENSOR A0
+#define LEFT_SENSOR 7
 int val = 0;
 
 void setup() {
@@ -15,8 +15,11 @@ void setup() {
 }
 
 void loop() {
-  val = analogRead(LEFT_SENSOR);   // read new state
+  val = digitalRead(LEFT_SENSOR);   // read new state
   Serial.println(val);
+  if (not val) {
+    digitalWrite(12, HIGH);
+  }
 
 //  if (pinStatePrevious == LOW && pinStateCurrent == HIGH) {   // pin state change: LOW -> HIGH
 //    Serial.println("Motion detected!");
