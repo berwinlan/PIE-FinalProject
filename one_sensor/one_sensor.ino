@@ -22,19 +22,19 @@ void loop(){
   
   if (val >= 700) {            // check if the input is HIGH
     digitalWrite(ledPin, HIGH);  // turn LED ON
-    if (pirState == LOW) {
-      // we have just turned on
-      Serial.println("Motion detected!");
-      // We only want to print on the output change, not state
-      pirState = HIGH;
-    }
+//    if (pirState == LOW) {
+//      // we have just turned on
+//      Serial.println("Motion detected!");
+//      // We only want to print on the output change, not state
+//      pirState = HIGH;
+//    }
   } else {
     digitalWrite(ledPin, LOW); // turn LED OFF
-    if (pirState == HIGH){
-      // we have just turned off
-      Serial.println("Motion ended!");
-      // We only want to print on the output change, not state
-      pirState = LOW;
-    }
+//    if (pirState == HIGH){
+//      // we have just turned off
+//      Serial.println("Motion ended!");
+//      // We only want to print on the output change, not state
+//      pirState = LOW;
+//    }
   }
 }
