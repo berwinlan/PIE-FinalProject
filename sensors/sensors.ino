@@ -6,8 +6,8 @@
 // define pins
 #define LEFT_LED 12
 #define RIGHT_LED 13
-#define LEFT_INPUT A0
-#define RIGHT_INPUT A1
+#define LEFT_SENSOR A0
+#define RIGHT_SENSOR A1
 
 // initialize values
 int leftPirState = LOW;             // we start, assuming no motion detected
@@ -18,8 +18,8 @@ int rightVal = 0;                   // variable for reading the pin status
 void setup() {
   pinMode(LEFT_LED, OUTPUT);      // declare LED as output
   pinMode(RIGHT_LED, OUTPUT);     // declare LED as output
-  pinMode(LEFT_INPUT, INPUT);     // declare sensor as input
-  pinMode(RIGHT_INPUT, INPUT);    // declare sensor as input
+  pinMode(LEFT_SENSOR, INPUT);     // declare sensor as input
+  pinMode(RIGHT_SENSOR, INPUT);    // declare sensor as input
 
   // initialize serial monitor
   Serial.begin(9600);
@@ -27,8 +27,8 @@ void setup() {
  
 void loop(){
   // read sensor input values
-  leftVal = digitalRead(LEFT_INPUT);
-  rightVal = digitalRead(RIGHT_INPUT);
+  leftVal = digitalRead(LEFT_SENSOR);
+  rightVal = digitalRead(RIGHT_SENSOR);
   
   if (leftVal == HIGH and rightVal == HIGH) {            // check if both inputs are HIGH
     digitalWrite(LEFT_LED, HIGH);   // turn LED ON
