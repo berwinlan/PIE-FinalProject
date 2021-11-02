@@ -10,7 +10,7 @@
 #define RIGHT_SENSOR A1
 
 // threshold of HIGH v. LOW
-#define THRESHOLD 300
+#define THRESHOLD 800
 
 // Serial baud rate
 #define BAUD_RATE 9600
@@ -41,12 +41,12 @@ void loop(){
   rightHigh = rightVal >= THRESHOLD;
   
 //  // print sensor input values for debugging
-//  Serial.print("left: ");
-//  Serial.print(leftVal >= THRESHOLD);
-//  Serial.print(", right: ");
-//  Serial.println(rightVal >= THRESHOLD);
+  Serial.print("left: ");
+  Serial.print(leftHigh);
+  Serial.print(", right: ");
+  Serial.println(rightHigh);
   
-  if (leftVal and rightVal) {            // check if both inputs are HIGH
+  if (leftHigh and rightHigh) {            // check if both inputs are HIGH
     digitalWrite(LEFT_LED, HIGH);   // turn LED ON
     digitalWrite(RIGHT_LED, HIGH);  // turn LED ON
     Serial.println("both");
@@ -57,7 +57,7 @@ void loop(){
       leftPirState = HIGH;
       rightPirState = HIGH;
     }
-  } else if (leftVal and rightVal) {            // check if left input is HIGH
+  } else if (leftHigh and not rightHigh) {            // check if left input is HIGH
     digitalWrite(LEFT_LED, HIGH);  // turn LED ON
     Serial.println("left");
     if (leftPirState == LOW) {
@@ -66,7 +66,7 @@ void loop(){
       // We only want to print on the output change, not state
       leftPirState = HIGH;
     }
-  } else if (rightVal and leftVal) {            // check if right input is HIGH
+  } else if (rightHigh and not leftHigh) {            // check if right input is HIGH
     digitalWrite(RIGHT_LED, HIGH);  // turn LED ON
     Serial.println("right");
     if (rightPirState == LOW) {
@@ -75,7 +75,7 @@ void loop(){
       // We only want to print on the output change, not state
       rightPirState = HIGH;
     }
-  } else if (leftVal and rightVal) {          // check if both inputs are LOW
+  } else if (not leftHigh and not rightHigh) {          // check if both inputs are LOW
     digitalWrite(LEFT_LED, LOW); // turn LED OFF
     digitalWrite(RIGHT_LED, LOW); // turn LED OFF
     Serial.println("none");
