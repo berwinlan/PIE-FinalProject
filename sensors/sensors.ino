@@ -30,6 +30,12 @@ void loop(){
   leftVal = digitalRead(LEFT_SENSOR);
   rightVal = digitalRead(RIGHT_SENSOR);
   
+  // print sensor input values for debugging
+  Serial.print("left: ");
+  Serial.print(leftVal);
+  Serial.print(", right: ");
+  Serial.println(rightVal);
+  
   if (leftVal == HIGH and rightVal == HIGH) {            // check if both inputs are HIGH
     digitalWrite(LEFT_LED, HIGH);   // turn LED ON
     digitalWrite(RIGHT_LED, HIGH);  // turn LED ON
