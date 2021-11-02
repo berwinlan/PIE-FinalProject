@@ -37,6 +37,7 @@ void loop(){
   leftVal = analogRead(LEFT_SENSOR);
   rightVal = analogRead(RIGHT_SENSOR);
 
+  // True if the reading value is over a threshold
   leftHigh = leftVal >= THRESHOLD;
   rightHigh = rightVal >= THRESHOLD;
   
