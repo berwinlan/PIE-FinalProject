@@ -6,8 +6,8 @@
 // define pins
 #define LEFT_LED 12
 #define RIGHT_LED 13
-#define LEFT_INPUT 2
-#define RIGHT_INPUT 4
+#define LEFT_INPUT A0
+#define RIGHT_INPUT A1
 
 // initialize values
 int leftPirState = LOW;             // we start, assuming no motion detected
