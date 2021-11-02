@@ -12,11 +12,11 @@
 #define LEFT_SENSOR A0
 #define RIGHT_SENSOR A1
 #define LEFT_MOTOR 2        // Set left motor pin to M2
-#define RIGHT_MOTOR 3       // Set left motor pin to M3
+#define RIGHT_MOTOR 1       // Set right motor pin to M1
 
 #define BAUD_RATE 9600
 
-#define INITIAL_SPEED 100
+#define INITIAL_SPEED 10
 
 // Initialize values
 int leftPirState = LOW;             // we start, assuming no motion detected
@@ -96,15 +96,23 @@ void loop() {
 
   if ((sensor[0] == 1) && (sensor[1] == 1)){ // If robot is on tape, error = 0.
     error = 0;
+    digitalWrite(LEFT_LED, HIGH);   // turn LED ON
+    digitalWrite(RIGHT_LED, HIGH);  // turn LED ON
   } 
   if ((sensor[0] == 1) && (sensor[1] == 0)){ // If robot right of tape, error = -1.
     error = -1;
+    digitalWrite(LEFT_LED, HIGH);    // turn LED on
+    digitalWrite(RIGHT_LED, LOW);    // turn LED off
   }
   if ((sensor[0] == 0) && (sensor[1] == 1)){ // If robot left of tape, error = 1.
     error = 1;
+    digitalWrite(LEFT_LED, LOW);    // turn LED off
+    digitalWrite(RIGHT_LED, HIGH);    // turn LED on
   }
 
   PID = computePID(error);
+
+//  Serial.println(PID);
 
   // If robot is to the right of the tape, decrease left motor speed and increase
   // right motor speed. If robot is to the left of the tape, increase left motor speed
