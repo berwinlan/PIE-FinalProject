@@ -1,5 +1,8 @@
 /*
  * PIR sensor tester
+ * This uses one sensor and using analog read and a threshold, 
+ *  determines if there is motion.
+ * This works with one sensor!
  */
 
 #define THRESHOLD 700         // anything above this output is motion detected
