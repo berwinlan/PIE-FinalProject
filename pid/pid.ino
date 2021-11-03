@@ -1,5 +1,5 @@
 /*
- * PIR sensor testing code from https://learn.adafruit.com/pir-passive-infrared-proximity-motion-sensor/using-a-pir-w-arduino
+ * PIR sensor base code from https://learn.adafruit.com/pir-passive-infrared-proximity-motion-sensor/using-a-pir-w-arduino
  */
 
 #include <Wire.h>
@@ -7,12 +7,12 @@
 #include "utility/Adafruit_MS_PWMServoDriver.h"
 
 // Define constants
-#define LEFT_LED 12
-#define RIGHT_LED 13
-#define LEFT_SENSOR 7
-#define RIGHT_SENSOR 8
-#define LEFT_MOTOR 2        // Set left motor pin to M2
-#define RIGHT_MOTOR 1       // Set right motor pin to M1
+#define LEFT_LED 12         // Set left LED pin to D12
+#define RIGHT_LED 13        // Set right LED pin to D13
+#define LEFT_SENSOR A0      // Set left sensor pin to A0
+#define RIGHT_SENSOR A1     // Set right sensor pin to A1
+#define LEFT_MOTOR 1        // Set left motor pin to M1
+#define RIGHT_MOTOR 2       // Set right motor pin to M2
 
 // threshold of HIGH v. LOW
 #define THRESHOLD 800
@@ -106,16 +106,25 @@ void loop() {
     error = 0;
     digitalWrite(LEFT_LED, HIGH);   // turn LED ON
     digitalWrite(RIGHT_LED, HIGH);  // turn LED ON
+
+    leftMotor->setSpeed(INITIAL_SPEED);
+    rightMotor->setSpeed(INITIAL_SPEED);
   } 
   if ((sensor[0] == 1) && (sensor[1] == 0)){ // If robot right of tape, error = -1.
     error = -1;
     digitalWrite(LEFT_LED, HIGH);    // turn LED on
     digitalWrite(RIGHT_LED, LOW);    // turn LED off
+    
+    leftMotor->setSpeed(0);
+    rightMotor->setSpeed(INITIAL_SPEED);
   }
   if ((sensor[0] == 0) && (sensor[1] == 1)){ // If robot left of tape, error = 1.
     error = 1;
     digitalWrite(LEFT_LED, LOW);    // turn LED off
     digitalWrite(RIGHT_LED, HIGH);    // turn LED on
+    
+    leftMotor->setSpeed(INITIAL_SPEED);
+    rightMotor->setSpeed(0);
   }
 
   PID = computePID(error);
@@ -125,8 +134,8 @@ void loop() {
   // If robot is to the right of the tape, decrease left motor speed and increase
   // right motor speed. If robot is to the left of the tape, increase left motor speed
   // and decrease right motor speed.
-  leftMotor->setSpeed(INITIAL_SPEED + PID); 
-  rightMotor->setSpeed(INITIAL_SPEED - PID);
+//  leftMotor->setSpeed(INITIAL_SPEED + PID); 
+//  rightMotor->setSpeed(INITIAL_SPEED - PID);
   leftMotor->run(FORWARD);
   rightMotor->run(FORWARD); 
 }
