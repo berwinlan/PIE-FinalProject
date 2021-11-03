@@ -6,14 +6,21 @@
 // define pins
 #define LEFT_LED 12
 #define RIGHT_LED 13
-#define LEFT_SENSOR 7
-#define RIGHT_SENSOR 8
+#define LEFT_SENSOR A0
+#define RIGHT_SENSOR A1
+
+// threshold of HIGH v. LOW
+#define THRESHOLD 800
+
+// Serial baud rate
+#define BAUD_RATE 9600
 
 // initialize values
 int leftPirState = LOW;             // we start, assuming no motion detected
 int rightPirState = LOW;            // we start, assuming no motion detected
 int leftVal = 0;                    // variable for reading the pin status
 int rightVal = 0;                   // variable for reading the pin status
+bool leftHigh, rightHigh;
 
 void setup() {
   pinMode(LEFT_LED, OUTPUT);      // declare LED as output
@@ -22,21 +29,25 @@ void setup() {
   pinMode(RIGHT_SENSOR, INPUT);    // declare sensor as input
 
   // initialize serial monitor
-  Serial.begin(9600);
+  Serial.begin(BAUD_RATE);
 }
  
 void loop(){
   // read sensor input values
-  leftVal = digitalRead(LEFT_SENSOR);
-  rightVal = digitalRead(RIGHT_SENSOR);
+  leftVal = analogRead(LEFT_SENSOR);
+  rightVal = analogRead(RIGHT_SENSOR);
+
+  // True if the reading value is over a threshold
+  leftHigh = leftVal >= THRESHOLD;
+  rightHigh = rightVal >= THRESHOLD;
   
   // print sensor input values for debugging
   Serial.print("left: ");
-  Serial.print(leftVal);
+  Serial.print(leftHigh);
   Serial.print(", right: ");
-  Serial.println(rightVal);
+  Serial.println(rightHigh);
   
-  if (leftVal == HIGH and rightVal == HIGH) {            // check if both inputs are HIGH
+  if (leftHigh and rightHigh) {            // check if both inputs are HIGH
     digitalWrite(LEFT_LED, HIGH);   // turn LED ON
     digitalWrite(RIGHT_LED, HIGH);  // turn LED ON
 //    Serial.println("both");
@@ -47,7 +58,7 @@ void loop(){
       leftPirState = HIGH;
       rightPirState = HIGH;
     }
-  } else if (leftVal == HIGH and rightVal == LOW) {            // check if left input is HIGH
+  } else if (leftHigh and not rightHigh) {            // check if left input is HIGH
     digitalWrite(LEFT_LED, HIGH);  // turn LED ON
 //    Serial.println("left");
     if (leftPirState == LOW) {
@@ -56,7 +67,7 @@ void loop(){
       // We only want to print on the output change, not state
       leftPirState = HIGH;
     }
-  } else if (rightVal == HIGH and leftVal == LOW) {            // check if right input is HIGH
+  } else if (rightHigh and not leftHigh) {            // check if right input is HIGH
     digitalWrite(RIGHT_LED, HIGH);  // turn LED ON
 //    Serial.println("right");
     if (rightPirState == LOW) {
@@ -65,7 +76,7 @@ void loop(){
       // We only want to print on the output change, not state
       rightPirState = HIGH;
     }
-  } else if (leftVal == LOW and rightVal == LOW) {          // check if both inputs are LOW
+  } else if (not leftHigh and not rightHigh) {          // check if both inputs are LOW
     digitalWrite(LEFT_LED, LOW); // turn LED OFF
     digitalWrite(RIGHT_LED, LOW); // turn LED OFF
 //    Serial.println("none");
