@@ -1,5 +1,6 @@
 /*
  * PIR sensor base code from https://learn.adafruit.com/pir-passive-infrared-proximity-motion-sensor/using-a-pir-w-arduino
+ * PID code from MP3
  */
 
 #include <Wire.h>
@@ -32,14 +33,14 @@ bool leftHigh, rightHigh;
 
 // Initialize coefficients for tuning
 double kp = 30; // Coefficient proportional gain
-double ki = 0.002; // Coefficient for integral gain
-double kd = 3000; // Coefficient for derivative gain.
+double ki = 0; // Coefficient for integral gain
+double kd = 0; // Coefficient for derivative gain.
 
 // Track times
 uint32_t currentTime, previousTime, elapsedTime;
 
 // Track error
-int sensor[2] = {0, 0}; // Intialize values for left and right sensors.
+int sensor[2] = {0, 0}; //    Initialize values for left and right sensors.
                         //    errors can be -1, 0, or 1 depending on which side
                         //    of the tape the robot is on.
                         //    sensor[0] is left wheel. sensor[1] is right wheel.
@@ -95,10 +96,10 @@ void loop() {
   Serial.print(", right: ");
   Serial.println(rightVal >= THRESHOLD);
 
-  // Define sensor values as 1 if they are greater than the threshold
-  //    meaning that the sensor is reading the tape. Define sensor values
-  //    as 0 if they are less than the threshold meaning that the sensor is
-  //    is reading the ground.
+  //  Define sensor values as 1 if they are greater than the threshold
+  //  meaning that the sensor is reading the tape. Define sensor values
+  //  as 0 if they are less than the threshold meaning that the sensor is
+  //  is reading the ground.
   sensor[0] = leftVal >= THRESHOLD; 
   sensor[1] = rightVal >= THRESHOLD;
 
@@ -107,35 +108,35 @@ void loop() {
     digitalWrite(LEFT_LED, HIGH);   // turn LED ON
     digitalWrite(RIGHT_LED, HIGH);  // turn LED ON
 
-    leftMotor->setSpeed(INITIAL_SPEED);
-    rightMotor->setSpeed(INITIAL_SPEED);
+//    leftMotor->setSpeed(INITIAL_SPEED);
+//    rightMotor->setSpeed(INITIAL_SPEED);
   } 
   if ((sensor[0] == 1) && (sensor[1] == 0)){ // If robot right of tape, error = -1.
     error = -1;
     digitalWrite(LEFT_LED, HIGH);    // turn LED on
     digitalWrite(RIGHT_LED, LOW);    // turn LED off
     
-    leftMotor->setSpeed(0);
-    rightMotor->setSpeed(INITIAL_SPEED);
+//    leftMotor->setSpeed(0);
+//    rightMotor->setSpeed(INITIAL_SPEED);
   }
   if ((sensor[0] == 0) && (sensor[1] == 1)){ // If robot left of tape, error = 1.
     error = 1;
     digitalWrite(LEFT_LED, LOW);    // turn LED off
     digitalWrite(RIGHT_LED, HIGH);    // turn LED on
     
-    leftMotor->setSpeed(INITIAL_SPEED);
-    rightMotor->setSpeed(0);
+//    leftMotor->setSpeed(INITIAL_SPEED);
+//    rightMotor->setSpeed(0);
   }
 
   PID = computePID(error);
 
-//  Serial.println(PID);
+  Serial.println(PID);
 
   // If robot is to the right of the tape, decrease left motor speed and increase
   // right motor speed. If robot is to the left of the tape, increase left motor speed
   // and decrease right motor speed.
-//  leftMotor->setSpeed(INITIAL_SPEED + PID); 
-//  rightMotor->setSpeed(INITIAL_SPEED - PID);
+  leftMotor->setSpeed(INITIAL_SPEED + PID); 
+  rightMotor->setSpeed(INITIAL_SPEED - PID);
   leftMotor->run(FORWARD);
   rightMotor->run(FORWARD); 
 }
