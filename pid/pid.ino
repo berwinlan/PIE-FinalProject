@@ -22,7 +22,8 @@
 #define BAUD_RATE 9600
 
 // Set initial speed of motors
-#define INITIAL_SPEED 25
+// This also controls overall speed once it gets going
+#define INITIAL_SPEED 30
 
 // Initialize values
 int leftPirState = LOW;             // we start, assuming no motion detected
@@ -32,9 +33,9 @@ int rightVal = 0;                   // variable for reading the pin status
 bool leftHigh, rightHigh;
 
 // Initialize coefficients for tuning
-double kp = 30; // Coefficient proportional gain
-double ki = 0; // Coefficient for integral gain
-double kd = 0; // Coefficient for derivative gain.
+double kp = 20; // Coefficient proportional gain - raw increase or decrease
+double ki = 0.001; // Coefficient for integral gain
+double kd = 100; // Coefficient for derivative gain - linear with amplitude
 
 // Track times
 uint32_t currentTime, previousTime, elapsedTime;
@@ -75,7 +76,7 @@ void setup() {
   previousTime = millis(); // Get the current value of the millis timer
   previousError = 0;
 
-  delay(500); // Delay so that the robot does not start moving right away
+  delay(5000); // Delay so that the robot does not start moving right away
   
   // Set the speed to start, from 0 (off) to 255 (max speed)
   leftMotor->setSpeed(INITIAL_SPEED);
