@@ -8,8 +8,6 @@
 #include "utility/Adafruit_MS_PWMServoDriver.h"
 
 // Define constants
-//#define LEFT_LED 12         // Set left LED pin to D12
-//#define RIGHT_LED 13        // Set right LED pin to D13
 #define LEFT_SENSOR A1      // Set left sensor pin to A1
 #define RIGHT_SENSOR A2     // Set right sensor pin to A2
 #define LEFT_MOTOR 3        // Set left motor pin to M3
@@ -62,8 +60,6 @@ void setup() {
   Serial.setTimeout(1);
 
   // Set up pins
-//  pinMode(LEFT_LED, OUTPUT);      // declare LED as output
-//  pinMode(RIGHT_LED, OUTPUT);     // declare LED as output
   pinMode(LEFT_SENSOR, INPUT);     // declare sensor as input
   pinMode(RIGHT_SENSOR, INPUT);    // declare sensor as input
 
@@ -98,9 +94,9 @@ void loop() {
   Serial.println(rightVal >= PIR_THRESHOLD);
 
   //  Define sensor values as 1 if they are greater than the PIR_THRESHOLD
-  //  meaning that the sensor is reading the tape. Define sensor values
-  //  as 0 if they are less than the PIR_THRESHOLD meaning that the sensor is
-  //  is reading the ground.
+  //  meaning that the sensor sees infrared. Define sensor values as 0 if 
+  //  they are less than the PIR_THRESHOLD meaning that the sensor is
+  //  not seeing infrared.
   sensor[0] = leftVal >= PIR_THRESHOLD; 
   sensor[1] = rightVal >= PIR_THRESHOLD;
 
@@ -116,8 +112,8 @@ void loop() {
 
   Serial.println(PID);
 
-  // If robot is to the right of the tape, decrease left motor speed and increase
-  // right motor speed. If robot is to the left of the tape, increase left motor speed
+  // If robot is to the right of the infrared, decrease left motor speed and increase
+  // right motor speed. If robot is to the left of the infrared, increase left motor speed
   // and decrease right motor speed.
   leftMotor->setSpeed(INITIAL_SPEED + PID); 
   rightMotor->setSpeed(INITIAL_SPEED - PID);
