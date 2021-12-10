@@ -19,7 +19,7 @@
 #define THRESHOLD 800
 
 // Serial baud rate
-#define BAUD_RATE 9600
+#define BAUD_RATE 115200
 
 // Set initial speed of motors
 // This also controls overall speed once it gets going
@@ -106,27 +106,10 @@ void loop() {
 
   if ((sensor[0] == 1) && (sensor[1] == 1)){ // If robot is on tape, error = 0.
     error = 0;
-//    digitalWrite(LEFT_LED, HIGH);   // turn LED ON
-//    digitalWrite(RIGHT_LED, HIGH);  // turn LED ON
-
-//    leftMotor->setSpeed(INITIAL_SPEED);
-//    rightMotor->setSpeed(INITIAL_SPEED);
-  } 
-  if ((sensor[0] == 1) && (sensor[1] == 0)){ // If robot right of tape, error = -1.
+  } else if ((sensor[0] == 1) && (sensor[1] == 0)){ // If robot right of tape, error = -1.
     error = -1;
-//    digitalWrite(LEFT_LED, HIGH);    // turn LED on
-//    digitalWrite(RIGHT_LED, LOW);    // turn LED off
-    
-//    leftMotor->setSpeed(0);
-//    rightMotor->setSpeed(INITIAL_SPEED);
-  }
-  if ((sensor[0] == 0) && (sensor[1] == 1)){ // If robot left of tape, error = 1.
+  } else if ((sensor[0] == 0) && (sensor[1] == 1)){ // If robot left of tape, error = 1.
     error = 1;
-//    digitalWrite(LEFT_LED, LOW);    // turn LED off
-//    digitalWrite(RIGHT_LED, HIGH);    // turn LED on
-    
-//    leftMotor->setSpeed(INITIAL_SPEED);
-//    rightMotor->setSpeed(0);
   }
 
   PID = computePID(error);
