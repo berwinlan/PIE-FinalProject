@@ -15,8 +15,8 @@
 #define LEFT_MOTOR 3        // Set left motor pin to M3
 #define RIGHT_MOTOR 2       // Set right motor pin to M2
 
-// threshold of HIGH v. LOW
-#define THRESHOLD 800
+// PIR_THRESHOLD of HIGH v. LOW
+#define PIR_THRESHOLD 800
 
 // Serial baud rate
 #define BAUD_RATE 115200
@@ -93,16 +93,16 @@ void loop() {
 
   // print sensor input values for debugging
   Serial.print("left: ");
-  Serial.print(leftVal >= THRESHOLD);
+  Serial.print(leftVal >= PIR_THRESHOLD);
   Serial.print(", right: ");
-  Serial.println(rightVal >= THRESHOLD);
+  Serial.println(rightVal >= PIR_THRESHOLD);
 
-  //  Define sensor values as 1 if they are greater than the threshold
+  //  Define sensor values as 1 if they are greater than the PIR_THRESHOLD
   //  meaning that the sensor is reading the tape. Define sensor values
-  //  as 0 if they are less than the threshold meaning that the sensor is
+  //  as 0 if they are less than the PIR_THRESHOLD meaning that the sensor is
   //  is reading the ground.
-  sensor[0] = leftVal >= THRESHOLD; 
-  sensor[1] = rightVal >= THRESHOLD;
+  sensor[0] = leftVal >= PIR_THRESHOLD; 
+  sensor[1] = rightVal >= PIR_THRESHOLD;
 
   if ((sensor[0] == 1) && (sensor[1] == 1)){ // If robot is on tape, error = 0.
     error = 0;

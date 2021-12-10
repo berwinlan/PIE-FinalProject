@@ -9,7 +9,7 @@
 #define BAUD_RATE 115200
 #define SERVO_PIN 2             // D1
 #define PHOTOTRANSISTOR_PIN A0
-#define THRESHOLD 10            // light/dark threshold
+#define LIGHT_THRESHOLD 10            // light/dark LIGHT_THRESHOLD
 #define DELAY 900
 
 // Servo positions of head
@@ -43,12 +43,12 @@ void loop() {
 //  Serial.print("moving avg: ");
 //  Serial.println(sensorMovingAvg);
 
-  if ((sensorMovingAvg <= THRESHOLD) && head_in) {
+  if ((sensorMovingAvg <= LIGHT_THRESHOLD) && head_in) {
     myservo.write(OUT_POS);
     delay(DELAY);
     head_in = !head_in;
     Serial.println("head out");
-  } else if ((sensorMovingAvg > THRESHOLD) && !head_in) {
+  } else if ((sensorMovingAvg > LIGHT_THRESHOLD) && !head_in) {
     myservo.write(IN_POS);
     delay(DELAY);
     head_in = !head_in;
