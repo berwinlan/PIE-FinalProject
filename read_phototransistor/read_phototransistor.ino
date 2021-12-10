@@ -3,8 +3,6 @@
  * Code from Sweep sample code used
  */
 
-#include <Servo.h>
-#include <movingAvg.h>
 
 #define BAUD_RATE 115200
 #define SERVO_PIN 2             // D1

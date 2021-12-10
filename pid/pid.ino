@@ -6,15 +6,25 @@
 #include <Wire.h>
 #include <Adafruit_MotorShield.h>
 #include "utility/Adafruit_MS_PWMServoDriver.h"
+#include <Servo.h>
+#include <movingAvg.h>
 
-// Define constants
-#define LEFT_SENSOR A1      // Set left sensor pin to A1
-#define RIGHT_SENSOR A2     // Set right sensor pin to A2
+// Define pins
+#define LEFT_PIR A1      // Set left sensor pin to A1
+#define RIGHT_PIR A2     // Set right sensor pin to A2
 #define LEFT_MOTOR 3        // Set left motor pin to M3
 #define RIGHT_MOTOR 2       // Set right motor pin to M2
+#define SERVO_PIN 2             // D1
+#define PHOTOTRANSISTOR_PIN A0
 
-// PIR_THRESHOLD of HIGH v. LOW
+// Thresholds of HIGH v. LOW
 #define PIR_THRESHOLD 800
+#define LIGHT_THRESHOLD 10            // light/dark LIGHT_THRESHOLD
+
+// Servo constants
+#define DELAY 900
+#define IN_POS 180
+#define OUT_POS 0
 
 // Serial baud rate
 #define BAUD_RATE 115200
@@ -29,6 +39,7 @@ int rightPirState = LOW;            // we start, assuming no motion detected
 int leftVal = 0;                    // variable for reading the pin status
 int rightVal = 0;                   // variable for reading the pin status
 bool leftHigh, rightHigh;
+bool head_in;      // toggle based on head position
 
 // Initialize coefficients for tuning
 double kp = 20; // Coefficient proportional gain - raw increase or decrease
@@ -54,14 +65,26 @@ Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 Adafruit_DCMotor *leftMotor = AFMS.getMotor(LEFT_MOTOR);   // attach left motor
 Adafruit_DCMotor *rightMotor = AFMS.getMotor(RIGHT_MOTOR);  // attach right motor
 
+// Set up servo and phototransistor
+Servo headServo;  // create servo object to control a servo
+movingAvg phototransistor(10);      // use 10 data points for moving avg
+
 void setup() {
   // Initialize serial monitor
   Serial.begin(BAUD_RATE);           
   Serial.setTimeout(1);
+  head_in = true;
+
+  // Initialize servo and phototransistor moving average
+  headServo.attach(SERVO_PIN);
+  headServo.write(OUT_POS);         // initial position of head out
+  
+  phototransistor.begin();
+  phototransistor.reset();
 
   // Set up pins
-  pinMode(LEFT_SENSOR, INPUT);     // declare sensor as input
-  pinMode(RIGHT_SENSOR, INPUT);    // declare sensor as input
+  pinMode(LEFT_PIR, INPUT);     // declare sensor as input
+  pinMode(RIGHT_PIR, INPUT);    // declare sensor as input
 
   if (!AFMS.begin()) {         // create with the default frequency 1.6KHz
     Serial.println("Could not find Motor Shield. Check wiring.");
@@ -83,9 +106,28 @@ void setup() {
 }
 
 void loop() {
+  // variables to track phototransistor readings
+  uint16_t phototransistorData;
+  uint16_t phototransistorMovingAvg;
+
   // read sensor input values
-  leftVal = analogRead(LEFT_SENSOR);
-  rightVal = analogRead(RIGHT_SENSOR);
+  leftVal = analogRead(LEFT_PIR);
+  rightVal = analogRead(RIGHT_PIR);
+
+  phototransistorData = analogRead(PHOTOTRANSISTOR_PIN);
+  phototransistorMovingAvg = phototransistor.reading(phototransistorData);
+
+  if ((phototransistorMovingAvg <= LIGHT_THRESHOLD) && head_in) {
+    headServo.write(OUT_POS);
+    delay(DELAY);
+    head_in = !head_in;
+    Serial.println("head out");
+  } else if ((phototransistorMovingAvg > LIGHT_THRESHOLD) && !head_in) {
+    headServo.write(IN_POS);
+    delay(DELAY);
+    head_in = !head_in;
+    Serial.println("head in");
+  }
 
   // print sensor input values for debugging
   Serial.print("left: ");
