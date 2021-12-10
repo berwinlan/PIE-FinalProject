@@ -27,7 +27,7 @@ void setup() {
   head_in = true;
   
   myservo.attach(SERVO_PIN);
-  myservo.write(IN_POS);         // initial position of head in
+  myservo.write(OUT_POS);         // initial position of head out
   
   phototransistor.begin();
   phototransistor.reset();
