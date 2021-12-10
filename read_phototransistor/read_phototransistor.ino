@@ -7,7 +7,7 @@
 #include <movingAvg.h>
 
 #define BAUD_RATE 115200
-#define SERVO_PIN 9             // D9
+#define SERVO_PIN 1             // D1
 #define PHOTOTRANSISTOR_PIN A0
 #define THRESHOLD 10            // light/dark threshold
 #define DELAY 900
@@ -42,18 +42,18 @@ void loop() {
   t = millis();
   sensorData = analogRead(PHOTOTRANSISTOR_PIN);
   sensorMovingAvg = phototransistor.reading(sensorData);
-//  Serial.print("data reading: ");
-//  Serial.println(sensorData);
-//  Serial.print("moving avg: ");
+  Serial.print("moving avg: ");
   Serial.println(sensorMovingAvg);
 
   if ((sensorMovingAvg <= THRESHOLD) && head_in) {
     myservo.write(OUT_POS);
     delay(DELAY);
     head_in = !head_in;
+    Serial.println("head out");
   } else if ((sensorMovingAvg > THRESHOLD) && !head_in) {
     myservo.write(IN_POS);
     delay(DELAY);
     head_in = !head_in;
+    Serial.println("head in");
   }
 }

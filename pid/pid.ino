@@ -8,11 +8,11 @@
 #include "utility/Adafruit_MS_PWMServoDriver.h"
 
 // Define constants
-#define LEFT_LED 12         // Set left LED pin to D12
-#define RIGHT_LED 13        // Set right LED pin to D13
-#define LEFT_SENSOR A0      // Set left sensor pin to A0
-#define RIGHT_SENSOR A1     // Set right sensor pin to A1
-#define LEFT_MOTOR 1        // Set left motor pin to M1
+//#define LEFT_LED 12         // Set left LED pin to D12
+//#define RIGHT_LED 13        // Set right LED pin to D13
+#define LEFT_SENSOR A1      // Set left sensor pin to A1
+#define RIGHT_SENSOR A2     // Set right sensor pin to A2
+#define LEFT_MOTOR 3        // Set left motor pin to M3
 #define RIGHT_MOTOR 2       // Set right motor pin to M2
 
 // threshold of HIGH v. LOW
@@ -23,7 +23,7 @@
 
 // Set initial speed of motors
 // This also controls overall speed once it gets going
-#define INITIAL_SPEED 30
+#define INITIAL_SPEED 50
 
 // Initialize values
 int leftPirState = LOW;             // we start, assuming no motion detected
@@ -62,8 +62,8 @@ void setup() {
   Serial.setTimeout(1);
 
   // Set up pins
-  pinMode(LEFT_LED, OUTPUT);      // declare LED as output
-  pinMode(RIGHT_LED, OUTPUT);     // declare LED as output
+//  pinMode(LEFT_LED, OUTPUT);      // declare LED as output
+//  pinMode(RIGHT_LED, OUTPUT);     // declare LED as output
   pinMode(LEFT_SENSOR, INPUT);     // declare sensor as input
   pinMode(RIGHT_SENSOR, INPUT);    // declare sensor as input
 
@@ -106,24 +106,24 @@ void loop() {
 
   if ((sensor[0] == 1) && (sensor[1] == 1)){ // If robot is on tape, error = 0.
     error = 0;
-    digitalWrite(LEFT_LED, HIGH);   // turn LED ON
-    digitalWrite(RIGHT_LED, HIGH);  // turn LED ON
+//    digitalWrite(LEFT_LED, HIGH);   // turn LED ON
+//    digitalWrite(RIGHT_LED, HIGH);  // turn LED ON
 
 //    leftMotor->setSpeed(INITIAL_SPEED);
 //    rightMotor->setSpeed(INITIAL_SPEED);
   } 
   if ((sensor[0] == 1) && (sensor[1] == 0)){ // If robot right of tape, error = -1.
     error = -1;
-    digitalWrite(LEFT_LED, HIGH);    // turn LED on
-    digitalWrite(RIGHT_LED, LOW);    // turn LED off
+//    digitalWrite(LEFT_LED, HIGH);    // turn LED on
+//    digitalWrite(RIGHT_LED, LOW);    // turn LED off
     
 //    leftMotor->setSpeed(0);
 //    rightMotor->setSpeed(INITIAL_SPEED);
   }
   if ((sensor[0] == 0) && (sensor[1] == 1)){ // If robot left of tape, error = 1.
     error = 1;
-    digitalWrite(LEFT_LED, LOW);    // turn LED off
-    digitalWrite(RIGHT_LED, HIGH);    // turn LED on
+//    digitalWrite(LEFT_LED, LOW);    // turn LED off
+//    digitalWrite(RIGHT_LED, HIGH);    // turn LED on
     
 //    leftMotor->setSpeed(INITIAL_SPEED);
 //    rightMotor->setSpeed(0);
