@@ -7,7 +7,7 @@
 #include <movingAvg.h>
 
 #define BAUD_RATE 115200
-#define SERVO_PIN 1             // D1
+#define SERVO_PIN 2             // D1
 #define PHOTOTRANSISTOR_PIN A0
 #define THRESHOLD 10            // light/dark threshold
 #define DELAY 900
@@ -35,15 +35,13 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  uint32_t t;
   uint16_t sensorData;
   uint16_t sensorMovingAvg;
 
-  t = millis();
   sensorData = analogRead(PHOTOTRANSISTOR_PIN);
   sensorMovingAvg = phototransistor.reading(sensorData);
-  Serial.print("moving avg: ");
-  Serial.println(sensorMovingAvg);
+//  Serial.print("moving avg: ");
+//  Serial.println(sensorMovingAvg);
 
   if ((sensorMovingAvg <= THRESHOLD) && head_in) {
     myservo.write(OUT_POS);
