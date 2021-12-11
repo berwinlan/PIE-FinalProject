@@ -43,8 +43,8 @@ bool head_in;      // toggle based on head position
 
 // Initialize coefficients for tuning
 double kp = 20; // Coefficient proportional gain - raw increase or decrease
-double ki = 0.001; // Coefficient for integral gain
-double kd = 100; // Coefficient for derivative gain - linear with amplitude
+double ki = 0; // Coefficient for integral gain
+double kd = 0; // Coefficient for derivative gain - linear with amplitude
 
 // Track times
 uint32_t currentTime, previousTime, elapsedTime;
