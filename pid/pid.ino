@@ -14,7 +14,7 @@
 #define RIGHT_PIR A2     // Set right sensor pin to A2
 #define LEFT_MOTOR 3        // Set left motor pin to M3
 #define RIGHT_MOTOR 2       // Set right motor pin to M2
-#define SERVO_PIN 2             // D1
+#define SERVO_PIN 2             // D2
 #define PHOTOTRANSISTOR_PIN A0
 
 // Thresholds of HIGH v. LOW
@@ -31,7 +31,7 @@
 
 // Set initial speed of motors
 // This also controls overall speed once it gets going
-#define INITIAL_SPEED 50
+#define INITIAL_SPEED 200
 
 // Initialize values
 int leftPirState = LOW;             // we start, assuming no motion detected
@@ -42,7 +42,7 @@ bool leftHigh, rightHigh;
 bool head_in;      // toggle based on head position
 
 // Initialize coefficients for tuning
-double kp = 20; // Coefficient proportional gain - raw increase or decrease
+double kp = 0; // Coefficient proportional gain - raw increase or decrease
 double ki = 0; // Coefficient for integral gain
 double kd = 0; // Coefficient for derivative gain - linear with amplitude
 
